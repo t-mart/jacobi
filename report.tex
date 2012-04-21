@@ -1,0 +1,27 @@
+\documentclass[12pt,letterpaper]{article}
+
+\title{Report: Jacobi Algorithm}
+\author{Tim Martin}
+\date{Spring 2012}
+
+\begin{document}
+
+\maketitle
+
+The Jacobi algorithm is an iterative method to find the eigenvalues of a matrix.
+It works by selecting the largest absolute off-diagonal value, creating a Givens
+rotation matrix, and applying it to the matrix. This causes the zero-ing of this
+off-diagonal value, and when repeated several times, the resulting matrix will
+be a diagonal matrix of only the eigenvalues.
+
+The Jacobi method has a few caveats however. First, while zeroing an
+off-diagonal value, other values in the matrix may change, including those the
+algorithm has already zeroed. In a sense, this is negative progress, but
+eventually, all the off-diagonals will converge towards zero.
+
+Second, the value that you choose to zero should be the largest off-diagonal
+value. Failure to do so results in a significantly slower convergence. The most
+efficient off-diagonals are the largest because they have the greatest effect on
+the diagonal property of the matrix.
+
+\end{document}
