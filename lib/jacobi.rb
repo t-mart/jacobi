@@ -68,7 +68,7 @@ puts "Sweep Algorithm"
 n = 0
 sweep_points = []
 while (off = sweep.sum_off_diag) > Jacobi::Iterator::CONVERGENCE_THRESHOLD
-  sweep_points << Math.log(off)
+  sweep_points << Math.log(off) if n % 1000 == 0
   n += 1
   sweep.next_sweep
 end
@@ -78,14 +78,14 @@ puts "Eigenvalues: #{Jacobi::Iterator.sort_row(sweep.a.diagonal)}"
 
 sweep_points_theoretical = []
 sweep_points.length.times do |i|
-  point = ((i + 1) * Math.log(9/10.0) + Math.log(sweep_sum_off_diag))
+  point = (((i / 1000) + 1) * Math.log(9/10.0) + Math.log(sweep.orig_sum_off_diag))
   sweep_points_theoretical << point
 end
 
 sweep_labels = {0 => '0'}
 label_div = sweep_points.length / 4
 4.times do |i|
-  sweep_labels[label_div * (i+1)] = (label_div * (i+1)).to_s
+  sweep_labels[label_div * (i+1) * 1000] = (label_div * (i+1) * 1000).to_s
 end
 
 sweep_graph = Gruff::Line.new 800
