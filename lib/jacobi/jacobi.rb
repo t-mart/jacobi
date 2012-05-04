@@ -6,10 +6,12 @@ module Jacobi
 
     CONVERGENCE_THRESHOLD = 10e-9
 
-    attr_accessor :a
+    attr_accessor :a, :orig_sum_off_diag
 
     def initialize a
       @a = a
+
+      @orig_sum_off_diag = sum_off_diag
 
       @i = 0
       @j = 1
@@ -17,8 +19,8 @@ module Jacobi
     
     def clone
       c = self.class.send(:new, @a)
-      c.set_i @i
-      c.set_j @j
+      #c.set_i @i
+      #c.set_j @j
       c
     end
 
@@ -67,6 +69,14 @@ module Jacobi
       max_index
     end
 
+    def actual_eigenvalues
+      a.eigen_symmv[0]
+    end
+
+    def self.sort_row(r)
+      Matrix.alloc(r.to_a.sort)
+    end
+
     def givens_matrix(row, col)
       givens = Matrix.eye 5
 
@@ -95,6 +105,9 @@ module Jacobi
       g = givens_matrix(@i, @j)
 
       incr_ij
+      while @a[@i,@j].abs < CONVERGENCE_THRESHOLD
+        incr_ij
+      end
       
       @a = g.transpose * @a * g
     end
